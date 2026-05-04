@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D'Serra Cafe ☕</title>
+    <style>
+        :root {
+            --bg-primary: linear-gradient(135deg, #2e1a14 0%, #3e2723 50%, #1a0f0a 100%);
+            --card-bg: #3e2723;
+            --card-hover: #4a362f;
+            --accent-gold: #d4a373;
+            --accent-gold-dark: #b8945f;
+            --text-light: #fefae0;
+            --text-muted: #d4b99c;
+            --shadow: 0 15px 30px rgba(0,0,0,0.3);
+            --shadow-sm: 0 8px 16px rgba(0,0,0,0.2);
+            --border-gold: 2px solid var(--accent-gold);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 12px;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+        }
+
+        /* HEADER COMPACT */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px 15px;
+            background: rgba(62, 39, 35, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: var(--border-gold);
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            background: linear-gradient(45deg, var(--accent-gold), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .header p {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* TABS COMPACT */
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 0 5px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: var(--border-gold);
+            color: var(--accent-gold);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2.2vw, 1rem);
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            flex: 1;
+            min-width: 100px;
+            max-width: 160px;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gold);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .tab-btn:hover::before,
+        .tab-btn.active::before {
+            left: 0;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            color: #2e1a14;
+            box-shadow: 0 8px 20px rgba(212, 163, 115, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* GRID MENU - DIPERKECIL */
+        .tab-content {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Dikecilin dari 280px */
+            gap: 15px; /* Dikecilin dari 20px */
+            animation: fadeIn 0.4s ease;
+            padding: 0 5px;
+        }
+
+        .tab-content.active {
+            display: grid;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MENU ITEM - DIPERKECIL */
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 15px; /* Dikecilin dari 18px */
+            padding: 15px 12px; /* Dikecilin dari 20px 15px */
+            text-align: center;
+            border: var(--border-gold);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            height: 100%;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px; /* Dikecilin dari 4px */
+            background: linear-gradient(90deg, var(--accent-gold), transparent);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-6px) scale(1.02); /* Dikecilin efek hover */
+            background: var(--card-hover);
+            box-shadow: var(--shadow-sm); /* Shadow lebih kecil */
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: clamp(110px, 18vw, 140px); /* Dikecilin dari 150px-180px */
+            object-fit: cover;
+            border-radius: 10px; /* Dikecilin dari 12px */
+            margin-bottom: 10px; /* Dikecilin dari 12px */
+            border: 2px solid rgba(212, 163, 115, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover img {
+            transform: scale(1.02); /* Dikecilin dari 1.03 */
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3); /* Dikecilin shadow */
+        }
+
+        .menu-item h4 {
+            font-size: clamp(1rem, 3vw, 1.15rem); /* Dikecilin dari 1.1rem-1.3rem */
+            color: var(--text-light);
+            margin-bottom: 6px; /* Dikecilin dari 8px */
+            font-weight: 700;
+            line-height: 1.3;
+            min-height: 2rem; /* Dikecilin dari 2.2rem */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item p {
+            color: var(--text-muted);
+            font-size: clamp(0.75rem, 2vw, 0.85rem); /* Dikecilin dari 0.85rem-0.95rem */
+            margin-bottom: 10px; /* Dikecilin dari 12px */
+            min-height: 2.2rem; /* Dikecilin dari 2.5rem */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+
+        .price {
+            font-size: clamp(1.1rem, 3.5vw, 1.4rem); /* Dikecilin dari 1.3rem-1.7rem */
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--accent-gold), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 8px; /* Dikecilin dari 12px */
+        }
+
+        /* DELETE BUTTON COMPACT */
+        .del-btn {
+            display: none;
+            background: linear-gradient(45deg, #8B0000, #A52A2A);
+            color: white;
+            border: none;
+            padding: 6px 8px; /* Dikecilin dari 8px */
+            border-radius: 15px; /* Dikecilin dari 20px */
+            cursor: pointer;
+            font-weight: 600;
+            font-size: clamp(0.7rem, 2vw, 0.8rem); /* Dikecilin */
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+        }
+
+        .del-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(139, 0, 0, 0.4); /* Dikecilin shadow */
+        }
+
+        body.admin-mode .del-btn,
+        body.admin-mode .menu-item:hover .del-btn {
+            display: block;
+        }
+
+        /* ADMIN PANEL COMPACT */
+        .admin-section {
+            background: linear-gradient(135deg, rgba(62, 39, 35, 0.95), rgba(46, 26, 20, 0.95));
+            color: var(--text-light);
+            padding: 25px 15px;
+            border-radius: 20px;
+            max-width: 420px;
+            width: 95%;
+            margin: 30px auto;
+            border: var(--border-gold);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+        }
+
+        .admin-section h3 {
+            text-align: center;
+            font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--accent-gold), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-section input,
+        .admin-section select,
+        .admin-section textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid rgba(212, 163, 115, 0.3);
+            border-radius: 12px;
+            background: rgba(254, 250, 224, 0.1);
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-section input::placeholder,
+        .admin-section textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .admin-section input:focus,
+        .admin-section select:focus,
+        .admin-section textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 15px rgba(212, 163, 115, 0.3);
+        }
+
+        .admin-section button {
+            width: 48%;
+            padding: 12px;
+            margin: 5px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, var(--accent-gold), var(--accent-gold-dark));
+            color: #2e1a14;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 163, 115, 0.4);
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #8B0000, #A52A2A);
+            color: white;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.4);
+        }
+
+        .admin-toggle {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 25px;
+            background: transparent;
+            border: var(--border-gold);
+            color: var(--accent-gold);
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+            font-weight: 700;
+            transition: all 0.3s ease;
+            max-width: 260px;
+            width: 90%;
+        }
+
+        .admin-toggle:hover {
+            background: var(--accent-gold);
+            color: #2e1a14;
+            box-shadow: 0 12px 30px rgba(212, 163, 115, 0.4);
+            transform: translateY(-4px);
+        }
+
+        /* RESPONSIVE COMPACT */
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .header { margin-bottom: 25px; padding: 20px 12px; }
+            .menu-tabs { gap: 6px; margin-bottom: 25px; }
+            .tab-content { 
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Lebih kecil di mobile */
+                gap: 12px; 
+            }
+            .menu-item { padding: 14px 10px; } /* Lebih kecil padding */
+            .admin-section { margin: 25px 5px; padding: 22px 12px; }
+            .admin-section button { width: 100%; margin: 4px 0; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 6px; }
+            .menu-tabs { flex-direction: column; align-items: center; }
+            .tab-btn { width: 100%; max-width: 240px; }
+            .tab-content { 
+                grid-template-columns: 1fr; 
+                gap: 12px; 
+            }
+            .admin-toggle { width: 95%; padding: 14px 20px; }
+        }
+
+        /* Anti-bug */
+        * { max-width: 100%; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>D'Serra Cafe</h1>
+            <p>Menu Premium ☕ Kopi Artisan 🍰 Bakery</p>
+        </div>
+
+        <div class="menu-tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'kopi')">☕ Kopi</button>
+            <button class="tab-btn" onclick="openTab(event, 'non-kopi')">🧋 Non Kopi</button>
+            <button class="tab-btn" onclick="openTab(event, 'makanan')">🍰 Makanan</button>
+        </div>
+
+        <div id="kopi" class="tab-content active"></div>
+        <div id="non-kopi" class="tab-content"></div>
+        <div id="makanan" class="tab-content"></div>
+
+        <button class="admin-toggle" onclick="loginAdmin()">🔧 Admin</button>
+
+        <div id="adminPanel" class="admin-section" style="display: none;">
+            <h3>➕ Tambah Menu</h3>
+            <input type="text" id="inNama" placeholder="Nama Menu">
+            <input type="number" id="inHarga" placeholder="Harga">
+            <textarea id="inDeskripsi" rows="2" placeholder="Deskripsi..."></textarea>
+            <select id="inKat">
+                <option value="kopi">☕ Kopi</option>
+                <option value="non-kopi">🧋 Non Kopi</option>
+                <option value="makanan">🍰 Makanan</option>
+            </select>
+            <input type="file" id="inGambar" accept="image/*">
+            <button class="save-btn" onclick="simpanMenu()">💾 Simpan</button>
+            <button class="close-btn" onclick="tutupAdmin()">❌ Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        let adminMode = false;
+        let jsonData = [];
+        let localData = [];
+
+        function openTab(evt, tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        function renderMenuItem(item, globalIndex) {
+            const div = document.getElementById(item.kategori);
+            if (div) {
+                div.innerHTML += `
+                    <div class="menu-item" data-index="${globalIndex}">
+                        ${item.gambar ? `<img src="${item.gambar}" alt="${item.nama}" loading="lazy">` : ''}
+                        <h4>${item.nama}</h4>
+                        ${item.deskripsi ? `<p>${item.deskripsi}</p>` : ''}
+                        <span class="price">${item.harga}</span>
+                        <button class="del-btn" onclick="hapusMenu(${globalIndex})">🗑️ Hapus</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadMenu() {
+            document.querySelectorAll('.tab-content').forEach(el => el.innerHTML = '');
+
+            try {
+                const resp = await fetch('menu.json');
+                jsonData = await resp.json();
+            } catch (e) {
+                jsonData = [];
+            }
+
+            localData = JSON.parse(localStorage.getItem('menuCafe')) || [];
+            const semuaMenu = [...jsonData, ...localData];
+            semuaMenu.forEach((item, index) => renderMenuItem(item, index));
+        }
+
+        function simpanMenu() {
+            const nama = document.getElementById('inNama').value.trim();
+            const harga = document.getElementById('inHarga').value.trim();
+            const deskripsi = document.getElementById('inDeskripsi').value.trim();
+            const kategori = document.getElementById('inKat').value;
+            const file = document.getElementById('inGambar').files[0];
+
+            if (!nama || !harga || !file) {
+                alert('❌ Lengkapi data!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const itemBaru = {
+                    nama,
+                    harga: `Rp ${parseInt(harga).toLocaleString('id-ID')}`,
+                    deskripsi: deskripsi || '',
+                    kategori,
+                    gambar: e.target.result
+                };
+
+                localData.push(itemBaru);
+                localStorage.setItem('menuCafe', JSON.stringify(localData));
+
+                const globalIndex = jsonData.length + localData.length - 1;
+                renderMenuItem(itemBaru, globalIndex);
+
+                document.getElementById('inNama').value = '';
+                document.getElementById('inHarga').value = '';
+                document.getElementById('inDeskripsi').value = '';
+                document.getElementById('inGambar').value = '';
+
+                alert('✅ Ditambahkan!');
+                
+                const tabBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => 
+                    btn.getAttribute('onclick').includes(kategori)
+                );
+                if (tabBtn) {
+                    openTab({currentTarget: tabBtn}, kategori);
+                    setTimeout(() => {
+                        const newItem = document.querySelector(`[data-index="${globalIndex}"]`);
+                        if (newItem) newItem.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    }, 200);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function hapusMenu(globalIndex) {
+            if (confirm('🗑️ Hapus menu?')) {
+                if (globalIndex < jsonData.length) {
+                    alert('❌ Menu JSON tidak bisa dihapus!');
+                    return;
+                }
+
+                const localIndex = globalIndex - jsonData.length;
+                localData.splice(localIndex, 1);
+                localStorage.setItem('menuCafe', JSON.stringify(localData));
+                
+                const menuElement = document.querySelector(`[data-index="${globalIndex}"]`);
+                if (menuElement) {
+                    menuElement.style.transition = 'all 0.3s ease';
+                    menuElement.style.opacity = '0';
+                    menuElement.style.transform = 'translateY(-15px)';
+                    setTimeout(() => menuElement.remove(), 250);
+                }
+                
+                alert('✅ Dihapus!');
+            }
+        }
+
+        function loginAdmin() {
+            const pass = prompt('🔑 Password:');
+            if (pass === 'admin123') {
+                adminMode = true;
+                document.body.classList.add('admin-mode');
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminPanel').scrollIntoView({behavior: 'smooth'});
+            } else {
+                alert('❌ Salah!');
+            }
+        }
+
+        function tutupAdmin() {
+            adminMode = false;
+            document.body.classList.remove('admin-mode');
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+
+        window.addEventListener('load', loadMenu);
+    </script>
+</body>
+</html>
